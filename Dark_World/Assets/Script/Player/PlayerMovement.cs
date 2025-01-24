@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,8 +17,12 @@ public class PlayerMovement : MonoBehaviour
     public bool active = true;
     [SerializeField] private AudioSource jumpSoundEffect;
 
-    // public Joystick joystick;
-    bool jump = false;
+
+    public Joystick joystick;
+    public Button jumpButton; // Assign in the Inspector
+
+    private bool jump = false;
+    private float moveDirection = 0f;
 
     private void Start()
     {
@@ -26,76 +31,49 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         capsuleCollider2d = transform.GetComponent<CapsuleCollider2D>();
+
+        // Assign jump button event
+        if (jumpButton != null)
+            jumpButton.onClick.AddListener(OnJumpPressed);
     }
 
-
-// void FixedUpdate() {
-          
- //   }
-   // void Move()
-   // {
-        // horizontalmove = joystick.Horizontal * movespeed;
-        // horizontalmoves = joystick.Horizontal * (-movespeed);
-    //     if(joystick.Horizontal > 0f)
-    //     {
-    //         rb.velocity = new Vector2(movespeed, rb.velocity.y);
-    //     }
-
-    //     if(joystick.Horizontal < 0f)
-    //     {
-    //         rb.velocity = new Vector2(-movespeed, rb.velocity.y);
-    //     }
-    // }
     // Update is called once per frame
 
     private void Update()
     {
-        // Move();    
-       // Horizontal run;
-       //  dirX = joystick.Horizontal * movespeed;
-       //   rb.velocity = new Vector2(joystick.Horizontal * movespeed ,rb.velocity.y);
+        moveDirection = joystick.Horizontal;
 
-        dirX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(dirX * movespeed,rb.velocity.y);
-
-        //Jump
-        // float verticalMove = joystick.Vertical;
-
-        // if(IsGrounded() && verticalMove >= 0.5f)
-        // {
-        //     Debug.Log("Three");
-        //     rb.velocity = new Vector2(rb.velocity.x,jumpforce);
-        //     jumpSoundEffect.Play();
-        // }
-
-         if(IsGrounded() && Input.GetButtonDown("Jump"))
+        if(moveDirection != 0)
+        { 
+            Debug.Log("moveDirection" + moveDirection);
+        }
+        
+        if (Mathf.Abs(moveDirection) > 0.1f) // Add threshold to avoid accidental movements
         {
-            rb.velocity = new Vector2(rb.velocity.x,jumpforce);
-            jumpSoundEffect.Play();
-        } 
+            rb.velocity = new Vector2(moveDirection * movespeed, rb.velocity.y);
         }
 
+            // Jump if grounded
+            if (IsGrounded() && jump)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                jumpSoundEffect.Play();
+                jump = false; // Reset jump after execution
+            }
+    }
+
+    private void OnJumpPressed()
+    {
+        if (IsGrounded())
+        {
+            jump = true; // Set jump flag, executed in Update()
+        }
+    }
+
     private bool IsGrounded() {
-       // RaycastHit raycastHit = Physics.CapsuleCast()
         RaycastHit2D raycastHit = Physics2D.CapsuleCast(capsuleCollider2d.bounds.center, capsuleCollider2d.bounds.size, CapsuleDirection2D.Vertical, 0, Vector2.down, 0.1f, platformlayerMask);
         return raycastHit.collider != null;
     }
 
-    // void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if(collision.gameObject.tag == "MovingPlatform")
-    //     {
-    //         transform.parent = collision.gameObject.transform;
-    //         onMovingPlatform = true; 
-    //     }
-    // }
-
-    // void OnCollisionExit2D(Collision2D collision)
-    // {
-    //     if (collision.gameObject.tag == "MovingPlatform")
-    //     {
-    //         transform.parent = null;
-    //         onMovingPlatform = false;
-    //     }
-    // }
 }
+

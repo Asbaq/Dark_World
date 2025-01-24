@@ -18,7 +18,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private AudioSource GateSound;
     [SerializeField] private AudioSource Checkpoints;
     [SerializeField] private AudioSource EvilSound;
-    
+
+   // AdMobManager adMobManager;
+
     private void Awake()
     {
         currentHealth = startinghealth;
@@ -55,78 +57,85 @@ public class PlayerHealth : MonoBehaviour
          }
     }
 
-     private IEnumerator WaitForSceneLoad1() 
-     {
+    private IEnumerator WaitForSceneLoad1()
+    {
         yield return new WaitForSeconds(x);
-        SceneManager.LoadScene("level_2"); 
-     }
+        SceneManager.LoadScene("level_2");
+       // adMobManager.ShowInterstitialAd();
+    }
 
-     private IEnumerator WaitForSceneLoad2() 
-     {
+    private IEnumerator WaitForSceneLoad2()
+    {
         yield return new WaitForSeconds(x);
-        SceneManager.LoadScene("level_3"); 
-     }
+        SceneManager.LoadScene("level_3");
+       // adMobManager.ShowInterstitialAd();
+    }
 
-     private IEnumerator WaitForSceneLoad3() 
-     {
+    private IEnumerator WaitForSceneLoad3()
+    {
         yield return new WaitForSeconds(x);
-        SceneManager.LoadScene("level_4"); 
-     }
+        SceneManager.LoadScene("level_4");
+      //  adMobManager.ShowInterstitialAd();
+    }
 
-     private IEnumerator WaitForSceneLoad4() 
-     {
+    private IEnumerator WaitForSceneLoad4()
+    {
         yield return new WaitForSeconds(x);
-        SceneManager.LoadScene("level_5"); 
-     }
+        SceneManager.LoadScene("level_5");
+      //  adMobManager.ShowInterstitialAd();
+    }
 
-     private IEnumerator WaitForSceneLoad5() 
-     {
+    private IEnumerator WaitForSceneLoad5()
+    {
         yield return new WaitForSeconds(x);
-        SceneManager.LoadScene("level_6"); 
-     }
+        SceneManager.LoadScene("level_6");
+      //  adMobManager.ShowInterstitialAd();
+    }
 
-     private IEnumerator WaitforSceneLoad6()
-     {
+    private IEnumerator WaitforSceneLoad6()
+    {
         yield return new WaitForSeconds(x);
         SceneManager.LoadScene("Final_level");
-     }
-     private IEnumerator WaitforSceneLoad7()
-     {
+     //   adMobManager.ShowInterstitialAd();
+    }
+    private IEnumerator WaitforSceneLoad7()
+    {
         yield return new WaitForSeconds(5f);
         SceneManager.LoadScene("Complete_Game");
-     }
+     //   adMobManager.ShowInterstitialAd();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {   
-        if(other.tag == "Enemy" && AttackArea.activeInHierarchy == false)
+    {
+        if (other.tag == "Enemy" && AttackArea.activeInHierarchy == false)
         {
             TakeDamage(1);
-            if(currentHealth > 0)
+            if (currentHealth > 0)
             {
-            Debug.Log("Respawn");
-            respawning = true;
+                Debug.Log("Respawn");
+                respawning = true;
             }
         }
 
-        if(other.tag == "Ladders")
+        if (other.tag == "Ladders")
         {
-           anim.SetTrigger("Climb");
+            anim.SetTrigger("Climb");
         }
 
-        if(other.tag == "MonsterCollider")
+        if (other.tag == "MonsterCollider")
         {
             EvilSound.Play();
         }
-        
+
         if (other.tag == "Checkpoints")
         {
-           Checkpoints.Play();
-           Debug.Log("Chek");
-           respawnPoint = other.transform.position;
+            Checkpoints.Play();
+            Debug.Log("Chek");
+            respawnPoint = other.transform.position;
         }
 
-        if (other.tag == "End1" )
-        {   
+        if (other.tag == "End1")
+        {
             GateSound.Play();
             StartCoroutine(WaitForSceneLoad1());
         }
@@ -148,19 +157,19 @@ public class PlayerHealth : MonoBehaviour
             GateSound.Play();
             StartCoroutine(WaitForSceneLoad4());
         }
-        
+
         if (other.tag == "End5")
         {
             GateSound.Play();
             StartCoroutine(WaitForSceneLoad5());
         }
-        
+
         if (other.tag == "End6")
         {
             GateSound.Play();
             StartCoroutine(WaitforSceneLoad6());
         }
-        
+
         if (other.tag == "sister")
         {
             GateSound.Play();
