@@ -4,6 +4,8 @@
 ## 📌 **Introduction**  
 **Dark World** is a **2D side-scrolling action game** where players control **Charles**, a lone warrior trying to escape a mysterious and hostile world. The game features **procedurally generated levels, power-ups, traps, and enemies**. Players must survive by dodging traps, defeating enemies, and upgrading their abilities.  
 
+Video Link - https://youtu.be/18bybA02Vwk
+
 ![image](https://github.com/Asbaq/Dark_World/assets/62818241/b54c0133-30f9-4c33-a36c-1ab82f94de83)
 
 ## 🎮 **Core Features**  
